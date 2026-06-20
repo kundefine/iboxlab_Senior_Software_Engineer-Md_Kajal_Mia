@@ -2,14 +2,65 @@
 
 namespace App\FlightProviders;
 
+use App\FlightDataParser\ProviderBimanBanglaDataParser;
+use App\FlightDataParser\ProviderNovoAirDataParser;
 use App\FlightProviders\Contacts\FlightProviderInterface;
 
 class ProviderBimanBangla implements FlightProviderInterface
 {
 
+    public function __construct(private ProviderBimanBanglaDataParser $parser)
+    {
+
+    }
+
     public function fetch(): array
     {
-        // TODO: Implement fetch() method.
+        // MOCK DATA FOR PROVIDER B (US BIMAN BANGLA)
+        $flights = [
+            "data" => [
+                [
+                    'airline_code' => 'BS',
+                    'origin' => 'DAC',
+                    'destination' => 'DXB',
+                    'departure_time' => '2026-07-01 09:15',
+                    'arrival_time' => '2026-07-01 15:00',
+                    'segments' => 1,
+                    'price' => [
+                        'amount' => 295,
+                        'currency' => 'USD',
+                    ],
+                    'number' => 'BS220',
+                ],
+                [
+                    'airline_code' => 'BS',
+                    'origin' => 'DAC',
+                    'destination' => 'DXB',
+                    'departure_time' => '2026-07-01 14:30',
+                    'arrival_time' => '2026-07-01 19:20',
+                    'segments' => 1,
+                    'price' => [
+                        'amount' => 265,
+                        'currency' => 'USD',
+                    ],
+                    'number' => 'BS118',
+                ],
+                [
+                    'airline_code' => 'EK',
+                    'origin' => 'DAC',
+                    'destination' => 'DXB',
+                    'departure_time' => '2026-07-01 03:45',
+                    'arrival_time' => '2026-07-01 06:50',
+                    'segments' => 0,
+                    'price' => [
+                        'amount' => 399,
+                        'currency' => 'USD',
+                    ],
+                    'number' => 'EK585',
+                ],
+            ]
+        ];
+        return $this->parser->format($flights);
     }
 
     public function getName(): string

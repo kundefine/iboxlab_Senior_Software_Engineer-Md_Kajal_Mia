@@ -2,20 +2,67 @@
 
 namespace App\FlightProviders;
 
-use App\Contacts\FlightDataParser\FlightDataParserInterface;
+use App\FlightDataParser\Contracts\FlightDataParserInterface;
+use App\FlightDataParser\ProviderUSBanglaDataParser;
 use App\FlightProviders\Contacts\FlightProviderInterface;
+use Illuminate\Support\Facades\Http;
 
 class ProviderUSBangla implements FlightProviderInterface
 {
-    public function __construct(private FlightDataParserInterface $flightDataParser)
+    public function __construct(private ProviderUSBanglaDataParser $parser)
     {
 
     }
 
     public function fetch(): array
     {
+        // MOCK DATA FOR PROVIDER A (US BANGLA)
+        $flights = [
+            "flights" => [
+                [
+                    'carrier' => 'AA',
+                    'from' => 'DAC',
+                    'to' => 'DXB',
+                    'depart' => '2026-07-01T08:00:00',
+                    'arrive' => '2026-07-01T12:30:00',
+                    'stops' => 0,
+                    'fare_usd' => 320.00,
+                    'flight_no' => 'AA101',
+                ],
+                [
+                    'carrier' => 'AA',
+                    'from' => 'DAC',
+                    'to' => 'DXB',
+                    'depart' => '2026-07-01T22:10:00',
+                    'arrive' => '2026-07-02T02:40:00',
+                    'stops' => 0,
+                    'fare_usd' => 280.00,
+                    'flight_no' => 'AA205',
+                ],
+                [
+                    'carrier' => 'BS',
+                    'from' => 'DAC',
+                    'to' => 'DXB',
+                    'depart' => '2026-07-01T09:15:00',
+                    'arrive' => '2026-07-01T15:00:00',
+                    'stops' => 1,
+                    'fare_usd' => 310.00,
+                    'flight_no' => 'BS220',
+                ],
+                [
+                    'carrier' => 'EK',
+                    'from' => 'DAC',
+                    'to' => 'DXB',
+                    'depart' => '2026-07-01T03:45:00',
+                    'arrive' => '2026-07-01T06:50:00',
+                    'stops' => 0,
+                    'fare_usd' => 410.00,
+                    'flight_no' => 'EK585',
+                ],
+            ]
 
-        return $this->flightDataParser->format($data);
+        ];
+        return $this->parser->format($flights);
     }
 
     public function getName(): string

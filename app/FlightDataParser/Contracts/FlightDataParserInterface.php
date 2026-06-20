@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Contacts\FlightDataParser;
+namespace App\FlightDataParser\Contracts;
 
 
 interface FlightDataParserInterface {

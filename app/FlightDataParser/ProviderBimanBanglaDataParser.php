@@ -2,31 +2,34 @@
 
 namespace App\FlightDataParser;
 
-use App\Contacts\FlightDataParser\FlightDataParserInterface;
+
+
+use App\DTOs\NormalizedFlight;
+use App\FlightDataParser\Contracts\FlightDataParserInterface;
 
 class ProviderBimanBanglaDataParser implements FlightDataParserInterface
 {
 
     public function format(array $providerFetchData): array
     {
-        $formatted = [];
+        return array_map(function ($f) {
+            // "2026-07-01 09:15" → "2026-07-01T09:15:00"
+            $dep = str_replace(' ', 'T', $f['departure_time']) . ':00';
+            $arr = str_replace(' ', 'T', $f['arrival_time']) . ':00';
 
-        foreach ($providerFetchData['data'] as $flight) {
-            $formatted[] = [
-                'flightNumber'  => $flight['number'],
-                'carrier'       => $flight['airline_code'],
-                'origin'        => $flight['origin'],
-                'destination'   => $flight['destination'],
-                'departureTime' => $flight['departure_time'],
-                'arrivalTime'   => $flight['arrival_time'],
-                'stops'         => $flight['segments'],
-                'price'         => $flight['price']['amount'],
-                'currency'      => $flight['price']['currency'],
-                'source'        => 'BimanBangla',
-            ];
-        }
-
-        return $formatted;
+            return new NormalizedFlight(
+                flightNumber:   $f['number'],
+                carrier:        $f['airline_code'],
+                origin:         $f['origin'],
+                destination:    $f['destination'],
+                departureTime:  $dep,
+                arrivalTime:    $arr,
+                stops:          $f['segments'],
+                price:          $f['price']['amount'],
+                currency:       $f['price']['currency'],
+                source:         'biman bangla',
+            );
+        }, $providerFetchData['data']);
     }
 
 }

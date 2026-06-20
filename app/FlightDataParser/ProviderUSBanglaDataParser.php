@@ -2,30 +2,25 @@
 
 namespace App\FlightDataParser;
 
-use App\Contacts\FlightDataParser\FlightDataParserInterface;
+
+use App\DTOs\NormalizedFlight;
+use App\FlightDataParser\Contracts\FlightDataParserInterface;
 
 class ProviderUSBanglaDataParser implements FlightDataParserInterface
 {
 
     public function format(array $providerFetchData) : array {
-
-        $formated = [];
-
-        foreach ($providerFetchData['flights'] as $flight) {
-            $formated[] = [
-                'flightNumber'  => $flight['flight_no'],
-                'carrier'       => $flight['carrier'],
-                'origin'        => $flight['from'],
-                'destination'   => $flight['to'],
-                'departureTime' => $flight['depart'],
-                'arrivalTime'   => $flight['arrive'],
-                'stops'         => $flight['stops'],
-                'price'         => $flight['fare_usd'],
-                'currency'      => 'USD',
-                'source'        => 'UsBangla',
-            ];
-        }
-
-        return $formated;
+        return array_map(fn($f) => new NormalizedFlight(
+            flightNumber:   $f['flight_no'],
+            carrier:        $f['carrier'],
+            origin:         $f['from'],
+            destination:    $f['to'],
+            departureTime:  $f['depart'],
+            arrivalTime:    $f['arrive'],
+            stops:          $f['stops'],
+            price:          $f['fare_usd'],
+            currency:       'USD',
+            source:         'us-bangla',
+        ), $providerFetchData['flights']);
     }
 }
