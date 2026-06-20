@@ -22,7 +22,7 @@ class FlightAggregatorService
         // Production-এ Fibers বা ReactPHP ব্যবহার করা যায়
         foreach ($this->providers as $provider) {
             try {
-                $flights = $provider->fetch($params);
+                $flights = $provider->fetch();
                 $allFlights = array_merge($allFlights, $flights);
                 $providerStatus[$provider->getName()] = 'success';
             } catch (\Throwable $e) {
