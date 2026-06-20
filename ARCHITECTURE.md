@@ -1,3 +1,7 @@
+# All code is hand coded from migration to service to service provider (similar feature implemented before in my company)
+# note: only READMD.md and ARCHITECHTRUE.md generate with claude for better view.
+# I rename the provider with ProviderUsBangla (ProviderA), ProviderBimanBangla (ProviderB), ProviderNovoAir(ProviderC), now the system is scalable so in the future the provider comes in like Provider Airastra then need to add to service array in AppServiceProvider
+
 # Architecture — Flight Search Aggregator
 
 This document explains the key architectural decisions made in this project,
